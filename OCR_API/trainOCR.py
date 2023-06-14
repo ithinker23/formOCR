@@ -13,8 +13,10 @@ import os
 import cv2
 from PIL import Image
 import numpy as np
+from services.sceneTextService import preprocess_image
 
-torch.cuda.empty_cache()
+# torch.cuda.empty_cache()
+# os.environ["PYTORCH_CUDA_ALLOC_CONF"] = "max_split_size_mb:100"
 
 class IAMDataset(Dataset):
     def __init__(self, df, processor, max_target_length=128):
@@ -118,13 +120,14 @@ training_args = Seq2SeqTrainingArguments(
     num_train_epochs=3,
     predict_with_generate=True,
     evaluation_strategy="steps",
-    per_device_train_batch_size=8,
-    per_device_eval_batch_size=8,
+    per_device_train_batch_size=4,
+    per_device_eval_batch_size=4,
     fp16=True, 
     output_dir=".",
     logging_steps=2,
-    save_steps=1000,
+    save_steps=100,
     eval_steps=200,
+    gradient_accumulation_steps = 8,
     save_total_limit=1,
 )
 

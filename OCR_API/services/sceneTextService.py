@@ -5,8 +5,9 @@ import numpy
 import cv2
 from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 
-processor = TrOCRProcessor.from_pretrained('microsoft/trocr-base-stage1')
-model = VisionEncoderDecoderModel.from_pretrained('microsoft/trocr-base-stage1')
+processor = TrOCRProcessor.from_pretrained('microsoft/trocr-large-handwritten')
+# model = VisionEncoderDecoderModel.from_pretrained('./OCR_model/')
+model = VisionEncoderDecoderModel.from_pretrained('microsoft/trocr-large-handwritten')
 
 def preprocess_image(image, field):
     #get page for field
@@ -59,6 +60,7 @@ def OCR_from_template(name, fields):
 
         results['training_data'].append({"template_name":name, "field_image":image, "prediction":answer, "field_name": field.get('Question')})
 
+        print(answer)
     results["fields"] = fields
 
     return results
